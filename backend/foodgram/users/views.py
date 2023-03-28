@@ -11,10 +11,12 @@ from .serializers import (SetPasswordSerializer, SubscriptionAuthorSerializer,
                           SubscriptionsSerializer, UsersCreateSerializer)
 
 
-class UserViewSet(mixins.ListModelMixin,
-                 mixins.RetrieveModelMixin,
-                  viewsets.GenericViewSet,
-                  mixins.CreateModelMixin):
+class UserViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+    mixins.CreateModelMixin
+):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
     pagination_class = CustomPaginator
@@ -25,22 +27,21 @@ class UserViewSet(mixins.ListModelMixin,
         return UsersCreateSerializer
 
     @action(
-            detail=False,
-            methods=['get'],
-            pagination_class=None,
-            permission_classes=[IsAuthenticated]
-        )
+        detail=False,
+        methods=['get'],
+        pagination_class=None,
+        permission_classes=[IsAuthenticated]
+    )
     def me(self, request):
         serializer = UserReadSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     @action(
-            detail=False,
-            methods=['post'],
-            pagination_class=None,
-            permission_classes=[IsAuthenticated]
-        )
-    
+        detail=False,
+        methods=['post'],
+        pagination_class=None,
+        permission_classes=[IsAuthenticated]
+    )
     def set_password(self, request):
         serializer = SetPasswordSerializer(request.user, data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -50,12 +51,11 @@ class UserViewSet(mixins.ListModelMixin,
         )
 
     @action(
-            detail=False,
-            methods=['get'],
-            permission_classes=[IsAuthenticated],
-            pagination_class=CustomPaginator
-        )
-    
+        detail=False,
+        methods=['get'],
+        permission_classes=[IsAuthenticated],
+        pagination_class=CustomPaginator
+    )
     def subscriptions(self, request):
         queryset = User.objects.filter(following__user=request.user)
         page = self.paginate_queryset(queryset)
@@ -64,8 +64,11 @@ class UserViewSet(mixins.ListModelMixin,
         )
         return self.get_paginated_response(serializer.data)
 
-    @action(detail=True, methods=['post', 'delete'],
-            permission_classes=[IsAuthenticated])
+    @action(
+        detail=True,
+        methods=['post', 'delete'],
+        permission_classes=[IsAuthenticated]
+    )
     def subscribe(self, request, **kwargs):
         author = get_object_or_404(User, id=kwargs['pk'])
 

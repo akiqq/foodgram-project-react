@@ -48,12 +48,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if self.action in ('list', 'retrieve'):
             return RecipeGetSerializer
         return RecipePostDeleteSerializer
-    
+
     @action(
-            detail=True,
-            methods=('post', 'delete'),
-            permission_classes=[IsAuthenticated]
-        )
+        detail=True,
+        methods=('post', 'delete'),
+        permission_classes=[IsAuthenticated]
+    )
     def favorite(self, request, **kwargs):
         recipe = get_object_or_404(Recipe, id=kwargs['pk'])
 
@@ -84,11 +84,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
 
     @action(
-            detail=True,
-            methods=('post', 'delete'),
-            permission_classes=(IsAuthenticated,),
-            pagination_class=None
-        )
+        detail=True,
+        methods=('post', 'delete'),
+        permission_classes=(IsAuthenticated,),
+        pagination_class=None
+    )
     def shopping_cart(self, request, **kwargs):
         recipe = get_object_or_404(Recipe, id=kwargs['pk'])
 
@@ -113,12 +113,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_204_NO_CONTENT
             )
-    
+
     @action(
-            detail=False,
-            methods=['get'],
-            permission_classes=[IsAuthenticated]
-        )
+        detail=False,
+        methods=['get'],
+        permission_classes=[IsAuthenticated]
+    )
     def download_shopping_cart(self, request, **kwargs):
         ingredients = (
             Ingredient.objects.filter(

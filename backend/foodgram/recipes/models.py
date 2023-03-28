@@ -12,7 +12,7 @@ class Tag(models.Model):
             RegexValidator(
                 '^#([a-fA-F0-9]{6})', message='Укажите HEX-код нужного цвета.'
             )
-        ]        
+        ]
     )
     slug = models.SlugField(unique=True, max_length=200)
 
@@ -37,13 +37,14 @@ class Ingredient(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class Recipe(models.Model):
     name = models.CharField(
-        max_length=200, 
+        max_length=200,
         blank=False
     )
     author = models.ForeignKey(
-        User, 
+        User,
         on_delete=models.CASCADE,
         related_name='recipes',
     )
@@ -57,14 +58,16 @@ class Recipe(models.Model):
         Ingredient,
         related_name='recipes',
     )
-    cooking_time = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    cooking_time = models.PositiveIntegerField(
+        validators=[MinValueValidator(1)]
+    )
 
     def __str__(self) -> str:
         return self.name
 
 
 class Favorite(models.Model):
-    
+
     user = models.ForeignKey(
         User,
         related_name='favorite_user',
@@ -87,7 +90,7 @@ class Favorite(models.Model):
 
 
 class Cart(models.Model):
-    
+
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='shopping_user'
     )

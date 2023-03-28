@@ -41,13 +41,12 @@ class Subscriptions(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-        constraints = [
-        models.UniqueConstraint(
-            fields= ['user', 'author'],
+        constraints = [models.UniqueConstraint(
+            fields=['user', 'author'],
             name='unique_subscription'
         ),
-        models.CheckConstraint(
-                check=~models.Q(author=models.F('user')),
-                name='user_not_author'
-            )
+            models.CheckConstraint(
+            check=~models.Q(author=models.F('user')),
+            name='user_not_author'
+        )
         ]

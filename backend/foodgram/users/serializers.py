@@ -1,6 +1,6 @@
 from api.serializers import RecipeSerializer
 from django.contrib.auth.hashers import make_password
-from djoser.serializers import UserCreateSerializer, UserSerializer
+from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 
 from .models import Subscriptions, User
@@ -25,10 +25,10 @@ class UsersCreateSerializer(UserCreateSerializer):
 
     def create(self, validated_data):
         user = User.objects.create(
-        email=validated_data['email'],
-        username=validated_data['username'],
-        password = make_password(validated_data['password'])
-    )
+            email=validated_data['email'],
+            username=validated_data['username'],
+            password=make_password(validated_data['password'])
+        )
         user.set_password(validated_data['password'])
         user.save()
         return user
