@@ -139,6 +139,14 @@ REST_FRAMEWORK = {
     'SEARCH_PARAM': 'name',
 }
 
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'user': 'api.serializers.UserReadSerializer',
+    },
+}
+
 LOGGING = {
     'version': 1,
     'handlers': {
