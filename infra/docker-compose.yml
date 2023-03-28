@@ -9,6 +9,7 @@ services:
       - ./.env
   
   backend:
+    container_name: backend
     build:
       context: ../backend
       dockerfile: Dockerfile
@@ -24,6 +25,7 @@ services:
       - ./.env
 
   frontend:
+    container_name: frontend
     build:
       context: ../frontend
       dockerfile: Dockerfile
@@ -31,6 +33,7 @@ services:
       - ../frontend/:/app/result_build/
   
   nginx:
+    container_name: nginx
     image: nginx:1.19.3
     ports:
       - "80:80"
