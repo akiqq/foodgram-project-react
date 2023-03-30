@@ -6,7 +6,6 @@ from recipes.models import (Cart, Favorite, Ingredient, Recipe,
                             RecipeIngredient, Tag)
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -85,7 +84,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                                           context={"request": request})
             serializer.is_valid(raise_exception=True)
             if not Cart.objects.filter(user=request.user,
-                                                recipe=recipe).exists():
+                                       recipe=recipe).exists():
                 Cart.objects.create(user=request.user, recipe=recipe)
                 return Response(serializer.data,
                                 status=status.HTTP_201_CREATED)
@@ -116,5 +115,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
             '{} - {} {}.'.format(*ingredient)) for ingredient in ingredients]
         file = HttpResponse('Cписок покупок:\n' + '\n'.join(file_list),
                             content_type='text/plain')
-        file['Content-Disposition'] = (f'attachment; filename="cart.txt"')
-        return 
+        file['Content-Disposition'] = ('attachment; filename="cart.txt"')
+        return file
