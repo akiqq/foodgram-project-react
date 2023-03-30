@@ -46,19 +46,17 @@ Key (ключ). Сюда необходимо вставить скопиров�
 
 <code>git clone git@github.com:akiqq/foodgram-project-react.git</code>
 
-### Запустить проект:
+### Развертывание на локальном сервере:
 
-Перейти в foodgram-project-react/infra
-
-docker-compose up -d --build
-
-docker-compose exec backend python manage.py makemigrations
-
-docker-compose exec backend python manage.py migrate
-
-docker-compose exec backend python manage.py createsuperuser
-
-docker-compose exec backend python manage.py collectstatic --no-input
+Установите на сервере docker и docker-compose.
+Создайте файл /infra/.env. Шаблон для заполнения файла нахоится в /infra/.env.example.
+Выполните команду docker-compose up -d --buld.
+Выполните миграции docker-compose exec backend python manage.py migrate.
+Создайте суперюзера docker-compose exec backend python manage.py createsuperuser.
+Соберите статику docker-compose exec backend python manage.py collectstatic --no-input.
+Заполните базу ингредиентами docker-compose exec backend python manage.py load_ingredients.
+Для корректного создания рецепта через фронт, надо создать пару тегов в базе через админку.
+Документация к API находится по адресу: http://localhost/api/docs/redoc.html.
 
 ### Примеры запросов:
 
