@@ -7,15 +7,6 @@ from .models import Subscriptions, User
 
 
 class UsersCreateSerializer(UserCreateSerializer):
-    def validate(self, obj):
-        invalid_usernames = (
-            'me', 'set_password', 'subscriptions', 'subscribe'
-        )
-        if self.initial_data.get('username') in invalid_usernames:
-            raise serializers.ValidationError(
-                {'username': 'Вы не можете использовать этот username.'}
-            )
-        return obj
 
     class Meta:
         model = User

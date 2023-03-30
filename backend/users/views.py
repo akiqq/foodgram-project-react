@@ -1,8 +1,8 @@
-from api.paginator import CustomPaginator
 from api.serializers import UserReadSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -19,7 +19,7 @@ class UserViewSet(
 ):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
-    pagination_class = CustomPaginator
+    pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
@@ -54,7 +54,7 @@ class UserViewSet(
         detail=False,
         methods=['get'],
         permission_classes=[IsAuthenticated],
-        pagination_class=CustomPaginator
+        pagination_class=PageNumberPagination
     )
     def subscriptions(self, request):
         queryset = User.objects.filter(following__user=request.user)
