@@ -305,3 +305,5 @@ GET http://localhost/api/ingredients/
 </code></pre>
 
 Автор: <br>[Александр](https://github.com/akiqq)
+
+Проект был развернут на сервере: http://10.129.0.4/recipes
