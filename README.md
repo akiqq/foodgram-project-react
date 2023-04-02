@@ -56,7 +56,7 @@ Key (ключ). Сюда необходимо вставить скопиров�
 Выполните миграции docker-compose exec backend python manage.py migrate.
 Создайте суперюзера docker-compose exec backend python manage.py createsuperuser.
 Соберите статику docker-compose exec backend python manage.py collectstatic --no-input.
-Заполните базу ингредиентами docker-compose exec backend python manage.py load_ingredients.
+Заполните базу ингредиентами docker-compose exec backend python manage.py uploadcsv.
 Для корректного создания рецепта через фронт, надо создать пару тегов в базе через админку.
 Документация к API находится по адресу: http://localhost/api/docs/redoc.html.
 
@@ -334,4 +334,8 @@ GET http://localhost/api/ingredients/
 
 Данные для входа:
 email: a@k.ru
+password: 1
+
+Данные для входа в админку:
+username: admin
 password: 1
