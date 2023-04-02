@@ -6,6 +6,7 @@ from recipes.models import (Cart, Favorite, Ingredient, Recipe,
                             RecipeIngredient, Tag)
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -23,7 +24,7 @@ class IngredientViewSet(mixins.ListModelMixin,
     queryset = Ingredient.objects.all()
     permission_classes = (AllowAny, )
     serializer_class = IngredientSerializer
-    pagination_class = None
+    pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter, )
     search_fields = ('^name', )
 
@@ -64,8 +65,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Favorite.objects.create(user=request.user, recipe=recipe)
                 return Response(serializer.data,
                                 status=status.HTTP_201_CREATED)
-            return Response({'errors': 'Рецепт уже в избранном.'},
-                            status=status.HTTP_400_BAD_REQUEST)
 
         if request.method == 'DELETE':
             get_object_or_404(Favorite, user=request.user,
@@ -88,8 +87,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Cart.objects.create(user=request.user, recipe=recipe)
                 return Response(serializer.data,
                                 status=status.HTTP_201_CREATED)
-            return Response({'errors': 'Рецепт уже в списке покупок.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+
 
         if request.method == 'DELETE':
             get_object_or_404(Cart, user=request.user,

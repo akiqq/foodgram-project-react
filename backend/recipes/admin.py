@@ -17,8 +17,15 @@ class TagAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    fields = ('ingredient', 'amount',)
+    min_num = 1
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
+    inlines = (RecipeIngredientInline,)
     list_display = ('pk', 'name', 'author', 'in_favorites')
     list_editable = (
         'name', 'author'

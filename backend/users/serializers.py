@@ -1,9 +1,30 @@
-from api.serializers import RecipeSerializer
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
 from .models import Subscriptions, User
+
+
+class UserReadSerializer(UserSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
+    def get_is_subscribed(self, obj):
+        user = get_user_model()
+        if user.is_anonymous:
+            return False
+        return user.follower.filter(following=obj.id).exists()
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed'
+        )
 
 
 class UsersCreateSerializer(UserCreateSerializer):
@@ -52,6 +73,7 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
         return obj.recipes.count()
 
     def get_recipes(self, obj):
+        from api.serializers import RecipeSerializer
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
@@ -75,6 +97,7 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionAuthorSerializer(serializers.ModelSerializer):
+    from api.serializers import RecipeSerializer
     email = serializers.ReadOnlyField()
     username = serializers.ReadOnlyField()
     is_subscribed = serializers.SerializerMethodField()

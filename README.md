@@ -4,7 +4,9 @@
 Проект реализован на Django и DjangoRestFramework. Доступ к данным реализован через API-интерфейс. Документация к API написана с использованием Redoc.
 
 ### Используемый стек:
-Python 3.7, Django 3.2, DRF 3.12, DJOSER, PostgreSQL
+Python 3.7, Django 3.2, DRF 3.12, DJOSER 2.1
+### Используемая СУБД:
+PostgreSQL
 ### Как запустить проект:
 Скачать и установить python 3.7 с сайта https://www.python.org/.
 
@@ -185,6 +187,28 @@ POST http://127.0.0.1:8000/api/recipes/
   "cooking_time": 1
 }
 </code></pre>
+
+PATCH http://127.0.0.1:8000/api/recipes/{id}/
+<pre><code>
+{
+  "ingredients": [
+    {
+      "id": 1123,
+      "amount": 10
+    }
+  ],
+  "tags": [
+    1,
+    2
+  ],
+  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==",
+  "name": "string",
+  "text": "string",
+  "cooking_time": 1
+}
+</code></pre>
+
+DELETE http://127.0.0.1:8000/api/recipes/{id}/
 
 PATCH http://127.0.0.1:8000/api/v1/users/
 <pre><code>

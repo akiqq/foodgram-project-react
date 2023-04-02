@@ -39,3 +39,4 @@ urllib3==1.26.15
 gunicorn==20.0.4
 psycopg2-binary==2.9.5
 python-dotenv==0.20.0
+progress==1.6

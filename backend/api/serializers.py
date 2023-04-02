@@ -1,33 +1,10 @@
+
 from django.db import transaction
-from djoser.serializers import UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Cart, Favorite, Ingredient, Recipe,
                             RecipeIngredient, Tag)
 from rest_framework import serializers
-from users.models import Subscriptions, User
 
-
-class UserReadSerializer(UserSerializer):
-    is_subscribed = serializers.SerializerMethodField()
-
-    def get_is_subscribed(self, obj):
-        if (self.context.get('request')
-           and not self.context['request'].user.is_anonymous):
-            return Subscriptions.objects.filter(
-                user=self.context['request'].user, author=obj
-            ).exists()
-        return False
-
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'is_subscribed'
-        )
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -43,7 +20,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'image',
             'cooking_time'
         )
-
+ 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -74,6 +51,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeReadSerializer(serializers.ModelSerializer):
+    from users.serializers import UserReadSerializer
     author = UserReadSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     ingredients = RecipeIngredientSerializer(
@@ -115,6 +93,7 @@ class RecipeIngredientCreateSerializer(serializers.ModelSerializer):
 
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
+    from users.serializers import UserReadSerializer
     tags = serializers.PrimaryKeyRelatedField(many=True,
                                               queryset=Tag.objects.all())
     author = UserReadSerializer(read_only=True)

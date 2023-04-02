@@ -1,4 +1,3 @@
-from api.serializers import UserReadSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -8,7 +7,8 @@ from rest_framework.response import Response
 
 from .models import Subscriptions, User
 from .serializers import (SetPasswordSerializer, SubscriptionAuthorSerializer,
-                          SubscriptionsSerializer, UsersCreateSerializer)
+                          SubscriptionsSerializer, UserReadSerializer,
+                          UsersCreateSerializer)
 
 
 class UserViewSet(
