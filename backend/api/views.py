@@ -35,7 +35,7 @@ class TagViewSet(mixins.ListModelMixin,
     permission_classes = (AllowAny, )
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    pagination_class = None
+    pagination_class = PageNumberPagination
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -74,7 +74,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=(IsAuthenticated,),
-            pagination_class=None)
+            pagination_class=PageNumberPagination)
     def shopping_cart(self, request, **kwargs):
         recipe = get_object_or_404(Recipe, id=kwargs['pk'])
 

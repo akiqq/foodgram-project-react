@@ -1,10 +1,10 @@
-
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import (Cart, Favorite, Ingredient, Recipe,
+from recipes.models import (Cart, Ingredient, Recipe,
                             RecipeIngredient, Tag)
 from rest_framework import serializers
-
+from users.models import User
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -69,19 +69,20 @@ class RecipeReadSerializer(serializers.ModelSerializer):
                   'text', 'cooking_time')
 
     def get_is_favorited(self, obj):
-        return (
-            self.context.get('request').user.is_authenticated
-            and Favorite.objects.filter(user=self.context['request'].user,
-                                        recipe=obj).exists()
-        )
+        user = get_object_or_404(User,
+                                 id=self.context.get('request').user.id)
+        if user.is_anonymous:
+            return False
+        return (user.is_authenticated
+                and user.favorite_user.filter(recipe=obj).exists())
 
     def get_is_in_shopping_cart(self, obj):
-        return (
-            self.context.get('request').user.is_authenticated
-            and Cart.objects.filter(
-                user=self.context['request'].user,
-                recipe=obj).exists()
-        )
+        user = get_object_or_404(User,
+                                 id=self.context.get('request').user.id)
+        if user.is_anonymous:
+            return False
+        return (user.is_authenticated
+                and user.shopping_user.filter(recipe=obj).exists())
 
 
 class RecipeIngredientCreateSerializer(serializers.ModelSerializer):

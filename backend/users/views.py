@@ -29,7 +29,7 @@ class UserViewSet(
     @action(
         detail=False,
         methods=['get'],
-        pagination_class=None,
+        pagination_class=PageNumberPagination,
         permission_classes=[IsAuthenticated]
     )
     def me(self, request):
@@ -39,7 +39,7 @@ class UserViewSet(
     @action(
         detail=False,
         methods=['post'],
-        pagination_class=None,
+        pagination_class=PageNumberPagination,
         permission_classes=[IsAuthenticated]
     )
     def set_password(self, request):
