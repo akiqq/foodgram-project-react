@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from .models import Subscriptions, User
+from .models import User
 
 
 class UserReadSerializer(UserSerializer):
