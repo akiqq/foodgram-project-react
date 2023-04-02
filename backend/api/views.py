@@ -35,10 +35,10 @@ class TagViewSet(mixins.ListModelMixin,
     permission_classes = (AllowAny, )
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = None
 
 
-class RecipeViewset(viewsets.ModelViewSet):
+class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     pagination_class = CustomPaginator
     permission_classes = (IsAuthorOrReadOnly, )

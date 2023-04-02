@@ -1,19 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from .models import User
+from .models import Subscriptions, User
 
 
 class UserReadSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
-        user = get_object_or_404(User, id=obj.id)
+        user = get_user_model()
         if user.is_anonymous:
             return False
-        return user.following.filter(author=obj).exists()
+        return user.follower.filter(following=obj.id).exists()
 
     class Meta:
         model = User
@@ -62,10 +62,12 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
     recipes_count = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
-        user = get_object_or_404(User, id=obj.id)
-        if user.is_anonymous:
-            return False
-        return user.following.filter(author=obj).exists()
+        return (
+            self.context.get('request').user.is_authenticated
+            and Subscriptions.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        )
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
@@ -108,10 +110,12 @@ class SubscriptionAuthorSerializer(serializers.ModelSerializer):
         return obj
 
     def get_is_subscribed(self, obj):
-        user = get_object_or_404(User, id=obj.id)
-        if user.is_anonymous:
-            return False
-        return user.following.filter(author=obj).exists()
+        return (
+            self.context.get('request').user.is_authenticated
+            and Subscriptions.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        )
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
