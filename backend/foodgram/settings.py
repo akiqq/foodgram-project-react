@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='mysecretkeykslhtyn^##a1)ilz@4zqj=r
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['51.250.21.217', 'backend']
+ALLOWED_HOSTS = ['51.250.21.217', 'backend', 'localhost']
 
 
 INSTALLED_APPS = [
@@ -115,7 +115,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': None,
     'PAGE_SIZE': 6,
 }
 
