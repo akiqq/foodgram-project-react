@@ -1,13 +1,16 @@
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
+
 from users.models import User
 
 
 class Ingredient(models.Model):
     name = models.CharField(
+        'Название',
         max_length=200
     )
     measurement_unit = models.CharField(
+        'Единица измерения',
         max_length=200
     )
 
@@ -22,9 +25,11 @@ class Ingredient(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(
+        'Название',
         max_length=200
     )
     color = models.CharField(
+        'Цвет',
         max_length=7,
         null=True,
         validators=[
@@ -51,13 +56,16 @@ class Tag(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(
+        'Название',
         max_length=200
     )
     text = models.TextField()
     cooking_time = models.IntegerField(
+        'Время приготовления, мин',
         validators=[MinValueValidator(1)]
     )
     image = models.ImageField(
+        'Изображение',
         upload_to='recipes/',
         blank=True
     )

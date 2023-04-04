@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='mysecretkeykslhtyn^##a1)ilz@4zqj=r
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['51.250.21.217', 'backend']
+ALLOWED_HOSTS = ['51.250.21.217', 'backend', 'localhost']
 
 
 INSTALLED_APPS = [
@@ -87,7 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 

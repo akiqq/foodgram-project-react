@@ -330,7 +330,7 @@ GET http://localhost/api/ingredients/
 
 Автор: <br>[Александр](https://github.com/akiqq)
 
-Проект был развернут на сервере: http://51.250.21.217/recipes
+Проект был развернут на сервере: http://178.154.192.242/recipes
 
 Данные для входа:
 email: a@k.ru
