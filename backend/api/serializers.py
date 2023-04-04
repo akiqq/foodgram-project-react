@@ -1,10 +1,12 @@
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
 from recipes.models import (Ingredient, Recipe,
                             RecipeIngredient, Tag)
-
+from users.models import User
+ 
 
 class RecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField(read_only=True)
@@ -60,10 +62,6 @@ class RecipeReadSerializer(serializers.ModelSerializer):
     image = Base64ImageField()
     current_user = serializers.CurrentUserDefault
     
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super().__init__(*args, **kwargs)
-    
     class Meta:
         model = Recipe
         fields = ('id', 'tags',
@@ -73,14 +71,16 @@ class RecipeReadSerializer(serializers.ModelSerializer):
                   'text', 'cooking_time')
     
     def get_is_favorited(self, obj):
-        user = self.user
+        user = get_object_or_404(User,
+                                 id=self.context.get('request').user.id)
         if user.is_anonymous:
             return False
         return (user.is_authenticated
                 and user.favorite_user.filter(recipe=obj).exists())
 
     def get_is_in_shopping_cart(self, obj):
-        user = self.user
+        user = get_object_or_404(User,
+                                 id=self.context.get('request').user.id)
         if user.is_anonymous:
             return False
         return (user.is_authenticated
