@@ -24,7 +24,6 @@ class IngredientViewSet(mixins.ListModelMixin,
     queryset = Ingredient.objects.all()
     permission_classes = (AllowAny, )
     serializer_class = IngredientSerializer
-    pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter, )
     search_fields = ('^name', )
 

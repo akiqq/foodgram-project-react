@@ -3,17 +3,19 @@ from django.contrib.auth.hashers import make_password
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from .models import User
+from .models import User, Subscriptions
 
 
 class UserReadSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
-        user = get_user_model()
-        if user.is_anonymous:
-            return False
-        return user.follower.filter(following=obj.id).exists()
+        if (self.context.get('request')
+           and not self.context['request'].user.is_anonymous):
+            return Subscriptions.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        return False
 
     class Meta:
         model = User
@@ -62,10 +64,12 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
     recipes_count = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
-        user = get_user_model()
-        if user.is_anonymous:
-            return False
-        return user.follower.filter(following=obj.id).exists()
+        return (
+            self.context.get('request').user.is_authenticated
+            and Subscriptions.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        )
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
@@ -108,10 +112,12 @@ class SubscriptionAuthorSerializer(serializers.ModelSerializer):
         return obj
 
     def get_is_subscribed(self, obj):
-        user = get_user_model()
-        if user.is_anonymous:
-            return False
-        return user.follower.filter(following=obj.id).exists()
+        return (
+            self.context.get('request').user.is_authenticated
+            and Subscriptions.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        )
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
