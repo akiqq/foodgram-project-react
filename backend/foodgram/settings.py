@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='mysecretkeykslhtyn^##a1)ilz@4zqj=r
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['178.154.192.242', 'backend']
+ALLOWED_HOSTS = ['178.154.192.242', 'backend', 'localhost']
 
 
 INSTALLED_APPS = [

@@ -8,7 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .filters import RecipeFilter
+from .filters import RecipeFilter, IngredientFilter
 from .paginator import CustomPaginator
 from .permissions import IsAuthorOrReadOnly
 from recipes.models import (Cart, Favorite, Ingredient, Recipe,
@@ -21,11 +21,11 @@ from .serializers import (IngredientSerializer, RecipeCreateSerializer,
 class IngredientViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
-    queryset = Ingredient.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = IngredientSerializer
-    filter_backends = (filters.SearchFilter, )
-    search_fields = ('^name', )
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = IngredientFilter
+    queryset = Ingredient.objects.all()
 
 
 class TagViewSet(mixins.ListModelMixin,
